@@ -1,1 +1,3 @@
-# geometry-natural-policy-gradients
+# Geometry and convergence of natural policy gradient methods
+
+This repo contains Julia code for the experimental evaluation of the convergence results obtained in the manuscript [https://arxiv.org/abs/2211.02105](Geometry and convergence of natural policy gradient methods) (joint work with Guido Montúfar). In particular, utilities.jl includes the basic functions computing the reward and state-action frequency of a policy. The definition of the the different Gram matrices used in the NPG methods is implemented for tabular softmax parametrizations in utilitiesNPGSoftmax.jl and can be easily generalized to arbitrary parametrizations. The code for the experiments, which implements vanilla PG, Kakade's, Morimura's and $\sigma$-NPG methods is documented in illustrationsUnregularizedReward.jl. 
