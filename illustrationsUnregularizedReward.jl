@@ -59,12 +59,7 @@ begin
     end
     ηDet = reshape(ηDet, (4, 3))
     # Begin the plot
-    p_state_action_polytope = Plots.plot(ηDet[:,1], ηDet[:,2], ηDet[:,3], seriestype=:scatter, markersize = 3, 
-    color="black", # camera = (30, 0), showaxis=false, ticks=false, legend=false, size = (400, 400),
-    #title="Vanilla PG", titlefontsize=20, fontfamily="Computer Modern", size = (400, 400), xlims=(-1., 1.), label=false,
-    #
-    #ylims=(-1.,1.), zlims=(-1.,1.), margin = -2cm
-    )
+    p_state_action_polytope = Plots.plot(ηDet[:,1], ηDet[:,2], ηDet[:,3], seriestype=:scatter, markersize = 3, color="black")
     Plots.plot!(Bas[[1, 2, 3, 4, 1, 3],1], Bas[[1, 2, 3, 4, 1, 3],2], Bas[[1, 2, 3, 4, 1, 3],3], color="black", label=false, width=1.2, linestyle=:dash)
     k=2*10^2
     ηAll = zeros(k + 1, k+1, 3)
@@ -126,20 +121,6 @@ nIterations = 3*10^3;
             end
         end
     end
-
-    #=
-    ### Make raw plots 
-    # Make state-action plot
-    p_Kakade_state_action = Plots.plot(p_state_action_polytope, ηTrajectories_Kakade[:,:,1], ηTrajectories_Kakade[:,:,2], ηTrajectories_Kakade[:,:,3], width=1.5)
-    Plots.plot!(p_Kakade_state_action, ηDet[[1, 2, 4, 3, 1],1], ηDet[[1, 2, 4, 3, 1],2], ηDet[[1, 2, 4, 3, 1],3], color="black", width=1.2)
-    Plots.plot!(p_Kakade_state_action, Bas[[2, 4],1], Bas[[2, 4],2], Bas[[2, 4],3], color="black", width=1.2, linestyle=:dash)
-
-    # Plot reward trajectories
-    gap = R_opt*ones(size(transpose(rewardTrajectories_Kakade[:,:,1])))-transpose(rewardTrajectories_Kakade[:,:,1])
-    p_Kakade_reward = plot(transpose(time_Kakade), gap)
-
-    # Plot the heatmap and trajectories in policy space
-    p_Kakade_policies = plot(p_heatmap, transpose(policyTrajectories_Kakade[:,:,1]), transpose(policyTrajectories_Kakade[:,:,2]), width=2)=#
 end
 
 ### σ-NPG
@@ -153,10 +134,6 @@ end
     policyTrajectories_σ = zeros(length(sigmas), nTrajectories, nIterations, nA);
     ηTrajectories_σ = zeros(length(sigmas), nIterations, nTrajectories, 3);
     time_σ = zeros(length(sigmas), nTrajectories, nIterations);
-    # Arrays to store the raw plots in
-    #p_σ_state_action = []
-    #p_σ_reward = []
-    #p_σ_policies = []
 end;
 
 # Run the optimization and make raw plots
@@ -180,26 +157,6 @@ end;
             end
         end
     end
-
-    #=
-    ### Make raw plots
-    # Make state-action plot
-    p = Plots.plot(p_state_action_polytope, ηTrajectories_σ[index,:,:,1], ηTrajectories_σ[index,:,:,2], ηTrajectories_σ[index,:,:,3],
-     width=1.5)
-    Plots.plot!(p, ηDet[[1, 2, 4, 3, 1],1], ηDet[[1, 2, 4, 3, 1],2], ηDet[[1, 2, 4, 3, 1],3], color="black", width=1.2)
-    Plots.plot!(p, Bas[[2, 4],1], Bas[[2, 4],2], Bas[[2, 4],3], color="black", width=1.2, linestyle=:dash)
-
-    push!(p_σ_state_action, p)
-
-    # Plot reward trajectories
-    gap = R_opt*ones(size(transpose(rewardTrajectories_σ[index,:,:,1])))-transpose(rewardTrajectories_σ[index,:,:,1])
-    p = plot(transpose(time_σ[index,:,:]), gap)
-    push!(p_σ_reward, p)
-
-    # Plot the heatmap and trajectories in policy space
-    p = plot(p_heatmap, transpose(policyTrajectories_σ[index,:,:,1]), transpose(policyTrajectories_σ[index,:,:,2]), width=2)
-    push!(p_σ_policies, p)=#
-
 end
 
 ### Vanilla PG
@@ -228,21 +185,6 @@ end
             end
         end
     end
-
-    #=
-    ### Make raw plots 
-    # Make state-action plot
-    p_vanilla_state_action = Plots.plot(p_state_action_polytope, ηTrajectories_vanilla[:,:,1], ηTrajectories_vanilla[:,:,2], ηTrajectories_vanilla[:,:,3], width=1.5)
-    Plots.plot!(p_vanilla_state_action, ηDet[[1, 2, 4, 3, 1],1], ηDet[[1, 2, 4, 3, 1],2], ηDet[[1, 2, 4, 3, 1],3], color="black", width=1.2)
-    Plots.plot!(p_vanilla_state_action, Bas[[2, 4],1], Bas[[2, 4],2], Bas[[2, 4],3], color="black", width=1.2, linestyle=:dash)
-
-    # Plot reward trajectories
-    gap = R_opt*ones(size(transpose(rewardTrajectories_vanilla[:,:,1])))-transpose(rewardTrajectories_vanilla[:,:,1])
-    p_vanilla_reward = plot(transpose(time_vanilla), gap)
-
-    # Plot the heatmap and trajectories in policy space
-    p_vanilla_policies = plot(p_heatmap, transpose(policyTrajectories_vanilla[:,:,1]), transpose(policyTrajectories_vanilla[:,:,2]), width=2)
-    =#
 end
 
 ########### Plotting #############
@@ -344,8 +286,5 @@ for i in 1:(length(sigmas)+2)
 
     # Insert path and comment out for exporting figure as a pdf
     # save("INSERT_PATH/reward-$i.pdf", plots_reward[i])
-
-    # Original line
-    save("Mathematik/POMDPs/Coding/Julia/POMDPs/natural-policy-gradients/graphics/reward-$i.pdf", plots_reward[i])
 
 end
